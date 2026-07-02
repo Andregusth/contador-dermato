@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contagem Regressiva — Dermato + Hemograma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --bg-fallback: #0F3D3E;
+    --card-bg: rgba(255,255,255,0.92);
+    --ink: #12312C;
+    --ink-soft: #4A6B64;
+    --accent: #FF6B5B;
+    --accent-soft: #FFD9CF;
+    --mint: #E8F3F1;
+    --line: rgba(15,61,62,0.18);
+    --display-font: 'Fraunces', serif;
+    --mono-font: 'Space Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: var(--mono-font);
+    color: var(--ink);
+  }
+
+  body{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+
+    background-image:
+      linear-gradient(180deg, rgba(15,61,62,0.55) 0%, rgba(15,61,62,0.75) 100%),
+      url('https://res.cloudinary.com/dlcd7wn12/image/upload/v1783016530/pimenta_abutuf.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .eyebrow{
+    font-family: var(--mono-font);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--mint);
+    text-align: center;
+    margin-bottom: 14px;
+    opacity: 0.9;
+  }
+
+  .headline{
+    font-family: var(--display-font);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(24px, 4vw, 40px);
+    color: #ffffff;
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 36px;
+    text-shadow: 0 2px 18px rgba(0,0,0,0.35);
+  }
+
+  .headline b{
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .card{
+    background: var(--card-bg);
+    backdrop-filter: blur(6px);
+    border-radius: 22px;
+    padding: 40px clamp(20px, 5vw, 56px) 32px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+    max-width: 720px;
+    width: 100%;
+  }
+
+  .card-label{
+    text-align: center;
+    font-family: var(--display-font);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    margin-bottom: 26px;
+  }
+
+  .card-label span{
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .tickets{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .ticket{
+    position: relative;
+    background: #fff;
+    border: 1.5px dashed var(--line);
+    border-radius: 12px;
+    padding: 18px 6px 14px;
+    text-align: center;
+  }
+
+  /* furinhos de picote no topo do ticket, estilo canhoto de requisição */
+  .ticket::before{
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 20px);
+    height: 12px;
+    background-image: radial-gradient(circle, var(--mint) 2.5px, transparent 2.6px);
+    background-size: 14px 14px;
+    background-repeat: repeat-x;
+    background-position: center top;
+  }
+
+  .ticket-num{
+    font-family: var(--mono-font);
+    font-weight: 700;
+    font-size: clamp(28px, 6vw, 44px);
+    line-height: 1;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ticket-label{
+    margin-top: 8px;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .ticket-code{
+    margin-top: 10px;
+    font-size: 9px;
+    color: var(--line);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-note{
+    margin-top: 26px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.03em;
+  }
+
+  .footer-note strong{
+    color: var(--accent);
+  }
+
+  /* ---------- Tela de "tempo esgotado" ---------- */
+  .done-screen{
+    display: none;
+    text-align: center;
+  }
+
+  .done-screen .stamp{
+    display: inline-block;
+    font-family: var(--display-font);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(22px, 4.5vw, 34px);
+    color: var(--accent);
+    border: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 10px 26px;
+    transform: rotate(-3deg);
+    margin-bottom: 18px;
+  }
+
+  .done-screen p{
+    font-family: var(--mono-font);
+    font-size: 14px;
+    color: var(--ink-soft);
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 480px){
+    .tickets{ gap: 8px; }
+    .ticket{ padding: 14px 2px 10px; }
+    .ticket-code{ display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div>
+    <p class="eyebrow">Lembrete importante</p>
+    <h1 class="headline">Faltam <b>este tempo</b> pra você parar de enrolar e marcar o dermato 💅</h1>
+
+    <div class="card">
+
+      <div id="countdownView">
+        <p class="card-label">Requisição de exame nº <span>0001</span> — validade encerra em:</p>
+
+        <div class="tickets">
+          <div class="ticket">
+            <div class="ticket-num" id="days">07</div>
+            <div class="ticket-label">Dias</div>
+            <div class="ticket-code">REQ-DIA</div>
+          </div>
+          <div class="ticket">
+            <div class="ticket-num" id="hours">00</div>
+            <div class="ticket-label">Horas</div>
+            <div class="ticket-code">REQ-HRA</div>
+          </div>
+          <div class="ticket">
+            <div class="ticket-num" id="minutes">00</div>
+            <div class="ticket-label">Minutos</div>
+            <div class="ticket-code">REQ-MIN</div>
+          </div>
+          <div class="ticket">
+            <div class="ticket-num" id="seconds">00</div>
+            <div class="ticket-label">Segundos</div>
+            <div class="ticket-code">REQ-SEG</div>
+          </div>
+        </div>
+
+        <p class="footer-note">Ao zerar: consulta com <strong>dermatologista</strong> + <strong>hemograma completo</strong>. Sem desculpa 😌</p>
+      </div>
+
+      <div id="doneView" class="done-screen">
+        <div class="stamp">Prazo vencido!</div>
+        <p>Chegou a hora, amiga. Agenda o dermatologista e pede o hemograma. O cronômetro não mente 🩺✨</p>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+  // ============================================================
+  // DATA ALVO — troque aqui se quiser mudar o prazo (formato ISO).
+  // Está configurado para 7 dias a partir do momento em que este
+  // arquivo foi gerado (02/07/2026 15:16 horário de Fortaleza).
+  // ============================================================
+  const targetDate = new Date("2026-07-09T18:16:37Z").getTime();
+
+  const daysEl = document.getElementById('days');
+  const hoursEl = document.getElementById('hours');
+  const minutesEl = document.getElementById('minutes');
+  const secondsEl = document.getElementById('seconds');
+  const countdownView = document.getElementById('countdownView');
+  const doneView = document.getElementById('doneView');
+
+  function pad(n){ return String(n).padStart(2, '0'); }
+
+  function tick(){
+    const now = Date.now();
+    const diff = targetDate - now;
+
+    if(diff <= 0){
+      countdownView.style.display = 'none';
+      doneView.style.display = 'block';
+      clearInterval(timer);
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    daysEl.textContent = pad(days);
+    hoursEl.textContent = pad(hours);
+    minutesEl.textContent = pad(minutes);
+    secondsEl.textContent = pad(seconds);
+  }
+
+  tick();
+  const timer = setInterval(tick, 1000);
+</script>
+
+</body>
+</html>
