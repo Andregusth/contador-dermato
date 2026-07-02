@@ -39,12 +39,14 @@
     padding: 24px;
     position: relative;
 
+    background-color: var(--bg-fallback);
     background-image:
-      linear-gradient(180deg, rgba(15,61,62,0.55) 0%, rgba(15,61,62,0.75) 100%),
+      linear-gradient(180deg, rgba(15,61,62,0.45) 0%, rgba(15,61,62,0.65) 100%),
       url('https://res.cloudinary.com/dlcd7wn12/image/upload/v1783016530/pimenta_abutuf.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background-size: cover, contain;
+    background-repeat: no-repeat, no-repeat;
+    background-position: center, center;
+    background-attachment: fixed, fixed;
   }
 
   .eyebrow{
@@ -211,28 +213,24 @@
     <div class="card">
 
       <div id="countdownView">
-        <p class="card-label">Requisição de exame nº <span>0001</span> — validade encerra em:</p>
+        <p class="card-label">Contagem Regressiva da Pimenta 🌶️</p>
 
         <div class="tickets">
           <div class="ticket">
             <div class="ticket-num" id="days">07</div>
             <div class="ticket-label">Dias</div>
-            <div class="ticket-code">REQ-DIA</div>
           </div>
           <div class="ticket">
             <div class="ticket-num" id="hours">00</div>
             <div class="ticket-label">Horas</div>
-            <div class="ticket-code">REQ-HRA</div>
           </div>
           <div class="ticket">
             <div class="ticket-num" id="minutes">00</div>
             <div class="ticket-label">Minutos</div>
-            <div class="ticket-code">REQ-MIN</div>
           </div>
           <div class="ticket">
             <div class="ticket-num" id="seconds">00</div>
             <div class="ticket-label">Segundos</div>
-            <div class="ticket-code">REQ-SEG</div>
           </div>
         </div>
 
